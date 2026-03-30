@@ -1,0 +1,254 @@
+﻿{
+  "locs": [
+    "Whitefield",
+    "Electronic City",
+    "Yelahanka",
+    "Bellandur",
+    "Kaggadasapura",
+    "Brookefield",
+    "Varthur",
+    "K.R Puram"
+  ],
+  "listings": [
+    745,
+    630,
+    341,
+    313,
+    155,
+    138,
+    130,
+    118
+  ],
+  "avgRent": [
+    20268,
+    12575,
+    14640,
+    25949,
+    15844,
+    20618,
+    14475,
+    11032
+  ],
+  "rentPSF": [
+    16.17,
+    14.06,
+    13.24,
+    18.02,
+    16.1,
+    16.83,
+    14.27,
+    13.12
+  ],
+  "avgSize": [
+    1297,
+    967,
+    1125,
+    1615,
+    1037,
+    1346,
+    1025,
+    883
+  ],
+  "deposit": [
+    144894,
+    84284,
+    140888,
+    194087,
+    119019,
+    151689,
+    98669,
+    97309
+  ],
+  "gym": [
+    0.533,
+    0.311,
+    0.364,
+    0.508,
+    0.116,
+    0.493,
+    0.346,
+    0.068
+  ],
+  "pool": [
+    0.47,
+    0.256,
+    0.337,
+    0.482,
+    0.065,
+    0.442,
+    0.346,
+    0.059
+  ],
+  "lift": [
+    0.679,
+    0.527,
+    0.449,
+    0.84,
+    0.497,
+    0.71,
+    0.492,
+    0.153
+  ],
+  "bhk1": [
+    96,
+    147,
+    48,
+    19,
+    26,
+    15,
+    15,
+    32
+  ],
+  "bhk2": [
+    350,
+    312,
+    174,
+    118,
+    93,
+    65,
+    84,
+    69
+  ],
+  "bhk3": [
+    241,
+    137,
+    105,
+    159,
+    32,
+    51,
+    24,
+    12
+  ],
+  "bhk4p": [
+    33,
+    5,
+    6,
+    13,
+    1,
+    5,
+    1,
+    0
+  ],
+  "rk1": [
+    25,
+    29,
+    8,
+    4,
+    3,
+    2,
+    6,
+    5
+  ],
+  "furnFF": [
+    96,
+    77,
+    13,
+    66,
+    7,
+    35,
+    6,
+    1
+  ],
+  "furnSF": [
+    602,
+    472,
+    270,
+    238,
+    145,
+    97,
+    114,
+    91
+  ],
+  "furnNF": [
+    47,
+    81,
+    58,
+    9,
+    3,
+    6,
+    10,
+    26
+  ],
+  "leaseAny": [
+    389,
+    377,
+    133,
+    157,
+    72,
+    66,
+    57,
+    44
+  ],
+  "leaseFamily": [
+    328,
+    234,
+    203,
+    148,
+    79,
+    71,
+    72,
+    71
+  ],
+  "leaseBach": [
+    26,
+    19,
+    4,
+    7,
+    4,
+    1,
+    1,
+    3
+  ],
+  "bhkRents": {
+    "RK1": {
+      "Whitefield": 6430,
+      "Electronic City": 4951,
+      "Yelahanka": 4562,
+      "Bellandur": 6875,
+      "Kaggadasapura": 5000,
+      "Brookefield": 7000,
+      "Varthur": 5000,
+      "K.R Puram": 3400
+    },
+    "BHK1": {
+      "Whitefield": 9432,
+      "Electronic City": 7568,
+      "Yelahanka": 6737,
+      "Bellandur": 12644,
+      "Kaggadasapura": 8980,
+      "Brookefield": 14356,
+      "Varthur": 7420,
+      "K.R Puram": 6993
+    },
+    "BHK2": {
+      "Whitefield": 19104,
+      "Electronic City": 13529,
+      "Yelahanka": 12943,
+      "Bellandur": 23075,
+      "Kaggadasapura": 16315,
+      "Brookefield": 20605,
+      "Varthur": 13994,
+      "K.R Puram": 12115
+    },
+    "BHK3": {
+      "Whitefield": 25461,
+      "Electronic City": 16723,
+      "Yelahanka": 20719,
+      "Bellandur": 28929,
+      "Kaggadasapura": 20721,
+      "Brookefield": 19641,
+      "Varthur": 21875,
+      "K.R Puram": 18750
+    },
+    "BHK4": {
+      "Whitefield": 36684,
+      "Electronic City": 30800,
+      "Yelahanka": 34166,
+      "Bellandur": 40896,
+      "Kaggadasapura": 27000,
+      "Brookefield": 55000,
+      "Varthur": 40000,
+      "K.R Puram": 0
+    }
+  }
+}

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bengaluru Rental Intelligence — Find Your Home</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{--ink:#0e0e0e;--ink2:#3a3a3a;--ink3:#717171;--paper:#f7f4ef;--paper2:#eeebe4;--paper3:#e4e0d8;--teal:#1a6b5a;--teal2:#2a9478;--teal3:#d4ede8;--gold:#c8973a;--gold2:#e8b55a;--rose:#b84242;--rose2:#f5dada;--blue:#2b4fa0;--blue2:#dde5f7;--amber:#d46c1a;--amber2:#fdecd7}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(247,244,239,0.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--paper3);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink)}.nav-logo span{color:var(--teal)}
+.nav-links{display:flex;gap:4px}.nav-links a{font-size:12px;color:var(--ink2);text-decoration:none;padding:6px 13px;border-radius:20px;transition:all .18s}
+.nav-links a:hover,.nav-links a.act{background:var(--ink);color:white}
+@media(max-width:700px){.nav-links{display:none}}
+#hero{min-height:100vh;display:flex;align-items:center;padding:80px 2.5rem 3rem;position:relative;overflow:hidden;background:var(--ink)}
+.hero-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.hero-glow{position:absolute;top:-20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(26,107,90,.25) 0%,transparent 65%);pointer-events:none}
+.hero-inner{position:relative;max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.hero-eye{font-size:10px;letter-spacing:3px;color:var(--gold2);text-transform:uppercase;font-weight:600;margin-bottom:1.25rem}
+.hero-h1{font-family:'DM Serif Display',serif;font-size:clamp(36px,4.5vw,60px);color:white;line-height:1.06;margin-bottom:1.25rem}
+.hero-h1 em{color:var(--gold2);font-style:italic}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:2rem;max-width:440px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-p{background:var(--teal);color:white;padding:13px 26px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;letter-spacing:.3px}
+.btn-p:hover{background:var(--teal2);transform:translateY(-1px)}
+.btn-s{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);padding:13px 26px;border-radius:4px;text-decoration:none;font-size:13px;border:1px solid rgba(255,255,255,.2);transition:all .2s}
+.btn-s:hover{background:rgba(255,255,255,.15)}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+.hstat{background:rgba(255,255,255,.04);padding:1.75rem 1.5rem;text-align:center}
+.hstat-v{font-family:'DM Serif Display',serif;font-size:34px;color:var(--gold2);line-height:1;margin-bottom:6px}
+.hstat-v sup{font-size:16px}
+.hstat-l{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.5px}
+#solver{background:var(--paper);padding:5rem 2.5rem}
+.solver-inner{max-width:1100px;margin:0 auto}
+.solver-head{text-align:center;margin-bottom:3rem}
+.eyebrow{font-size:10px;letter-spacing:3px;color:var(--teal);text-transform:uppercase;font-weight:600;margin-bottom:.75rem}
+.h2{font-family:'DM Serif Display',serif;font-size:clamp(26px,3vw,40px);color:var(--ink);line-height:1.15;margin-bottom:.75rem}
+.h2 em{color:var(--teal);font-style:italic}
+.subdesc{font-size:14px;color:var(--ink3);max-width:500px;margin:0 auto}
+.ptabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:2.5rem}
+.ptab{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:500;border:1.5px solid var(--paper3);background:white;color:var(--ink2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.ptab:hover{border-color:var(--teal);color:var(--teal)}.ptab.on{background:var(--teal);color:white;border-color:var(--teal)}
+.ptab-icon{font-size:15px}
+.ppage{display:none}.ppage.on{display:block}
+.answer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.ans-card{background:white;border:1px solid var(--paper3);border-radius:10px;padding:1.5rem;transition:all .2s;position:relative;overflow:hidden}
+.ans-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.07);border-color:var(--teal3)}
+.ans-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.ans-card.green::before{background:var(--teal)}.ans-card.gold::before{background:var(--gold)}.ans-card.rose::before{background:var(--rose)}.ans-card.blue::before{background:var(--blue)}
+.ans-rank{font-size:10px;letter-spacing:2px;font-weight:600;margin-bottom:6px}
+.ans-rank.green{color:var(--teal)}.ans-rank.gold{color:var(--gold)}.ans-rank.rose{color:var(--rose)}.ans-rank.blue{color:var(--blue)}
+.ans-loc{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);margin-bottom:4px}
+.ans-rent{font-size:22px;font-weight:600;color:var(--teal);margin-bottom:.75rem}
+.ans-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--paper2);color:var(--ink2)}
+.ans-row:last-child{border:none}.ans-row strong{color:var(--ink);font-weight:600}
+.ans-why{font-size:12px;color:var(--ink3);margin-top:.75rem;padding:.6rem;background:var(--paper2);border-radius:6px;line-height:1.5}
+.ans-why span{color:var(--teal);font-weight:600}
+.compare-tool{background:white;border:1px solid var(--paper3);border-radius:10px;padding:2rem;margin-top:.5rem}
+.compare-head{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:1.25rem}
+.compare-selects{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:1.25rem}
+.compare-selects select{padding:9px 14px;border:1px solid var(--paper3);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);cursor:pointer}
+.compare-selects select:focus{outline:none;border-color:var(--teal)}
+.cmp-vs{font-size:13px;color:var(--ink3);font-weight:500}
+.cmp-btn{background:var(--teal);color:white;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .2s}
+.cmp-btn:hover{background:var(--teal2)}
+.cmp-result{display:none}.cmp-result.show{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.cmp-col{background:var(--paper);border-radius:8px;padding:1.25rem}
+.cmp-col-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--teal)}
+.cmp-stat{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;color:var(--ink2)}
+.cmp-stat strong{font-weight:600;color:var(--ink)}
+.cmp-winner{font-size:10px;padding:2px 7px;border-radius:8px;background:var(--teal3);color:var(--teal);font-weight:600;margin-left:4px}
+.budget-finder{background:white;border:1px solid var(--paper3);border-radius:10px;padding:2rem}
+.budget-label{font-size:13px;color:var(--ink2);margin-bottom:.5rem}
+.budget-slider-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
+.budget-slider-row input[type=range]{flex:1;accent-color:var(--teal)}
+.budget-val{font-size:18px;font-weight:600;color:var(--teal);min-width:90px;text-align:right}
+.bhk-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem}
+.bhk-btn{padding:6px 16px;border:1px solid var(--paper3);border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;background:white;color:var(--ink2);transition:all .15s}
+.bhk-btn.on{background:var(--teal);color:white;border-color:var(--teal)}
+.budget-results{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
+.bres-card{background:var(--paper);border:1px solid var(--paper3);border-radius:8px;padding:1rem;text-align:center;transition:all .2s}
+.bres-card.match{background:var(--teal3);border-color:var(--teal2)}.bres-card.no{opacity:.4}
+.bres-loc{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.bres-rent{font-size:16px;font-weight:600;color:var(--teal)}
+.bres-tag{font-size:10px;color:var(--ink3);margin-top:2px}
+.bres-avail{font-size:10px;font-weight:600;color:var(--teal2);margin-top:4px}
+.bres-no{font-size:10px;color:var(--rose);margin-top:4px;font-weight:500}
+#kpis{background:var(--ink);padding:3rem 2.5rem}
+.kstrip{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(255,255,255,.08)}
+.kblock{background:var(--ink);padding:1.75rem 1.25rem;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.kblock:last-child{border:none}
+.kval{font-family:'DM Serif Display',serif;font-size:34px;color:var(--gold2);line-height:1;margin-bottom:6px}
+.klbl{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.8px;text-transform:uppercase}
+section.dash{padding:5rem 2.5rem}
+section.dash.alt{background:var(--paper2)}
+.sec-inner{max-width:1100px;margin:0 auto}
+.sec-head{margin-bottom:2.5rem}
+.sec-head .eyebrow{display:block;margin-bottom:.5rem}
+.sec-head h2{font-family:'DM Serif Display',serif;font-size:clamp(24px,2.8vw,36px);color:var(--ink);line-height:1.2;margin-bottom:.5rem}
+.sec-head h2 em{color:var(--gold);font-style:italic}
+.sec-head p{font-size:14px;color:var(--ink3);max-width:520px}
+.div3{width:36px;height:3px;background:var(--teal);border-radius:2px;margin:.75rem 0 2rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem}
+.chart-card{background:white;border:1px solid var(--paper3);border-radius:10px;padding:1.5rem}
+.chart-card.dark{background:var(--ink);border-color:transparent}
+.ch{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.chart-card.dark .ch{color:white}
+.cs{font-size:11px;color:var(--ink3);margin-bottom:1rem}
+.chart-card.dark .cs{color:rgba(255,255,255,.4)}
+.leg-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink2)}
+.legsq{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.blist{display:flex;flex-direction:column;gap:7px}
+.br{display:flex;align-items:center;gap:9px}
+.bn{font-size:11px;color:var(--ink2);width:108px;text-align:right;flex-shrink:0}
+.bt{flex:1;height:20px;background:var(--paper2);border-radius:3px;overflow:hidden}
+.bf{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.bv{font-size:11px;font-weight:600;color:var(--ink);width:85px;flex-shrink:0}
+.dblist{display:flex;flex-direction:column;gap:7px}
+.dbr{display:flex;align-items:center;gap:9px}
+.dbn{font-size:11px;color:rgba(255,255,255,.5);width:108px;text-align:right;flex-shrink:0}
+.dbt{flex:1;height:20px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.dbf{height:100%;border-radius:3px}
+.dbv{font-size:11px;font-weight:600;color:var(--gold2);width:60px;flex-shrink:0}
+.amgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.amcard{background:white;border:1px solid var(--paper3);border-radius:10px;padding:1.5rem;text-align:center;position:relative;overflow:hidden}
+.amcard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.amcard.t::before{background:var(--teal)}.amcard.b::before{background:var(--blue)}.amcard.g::before{background:var(--gold)}
+.am-pct{font-family:'DM Serif Display',serif;font-size:42px;color:var(--ink);line-height:1;margin-bottom:4px}
+.am-name{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-bottom:.5rem}
+.am-diff{font-size:13px;color:var(--ink2)}.am-diff strong{color:var(--teal);font-weight:600}
+.pick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.5rem}
+.pick{background:white;border:1px solid var(--paper3);border-radius:10px;padding:1.25rem;border-top:3px solid var(--teal)}
+.pick-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;margin-bottom:.6rem}
+.pick-loc{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.pick-rent{font-family:'DM Serif Display',serif;font-size:22px;color:var(--teal);margin-bottom:.75rem}
+.pick-row{display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:1px solid var(--paper2);color:var(--ink2)}
+.pick-row:last-child{border:none}.pick-row strong{font-weight:600;color:var(--ink)}
+.hmwrap{overflow-x:auto;margin-top:1rem}
+.hmtbl{width:100%;border-collapse:separate;border-spacing:3px;font-size:11px}
+.hmtbl th{padding:6px 8px;font-size:10px;font-weight:600;color:var(--ink3);letter-spacing:.5px;text-transform:uppercase;text-align:center}
+.hmtbl td{text-align:center;padding:9px 6px;border-radius:4px;font-weight:500;transition:all .2s}
+.hm-loc{text-align:left!important;font-weight:600;color:var(--ink);background:transparent!important;font-size:12px}
+#recs{background:var(--ink);padding:5rem 2.5rem}
+.rec-eye{font-size:10px;letter-spacing:3px;color:var(--gold2);text-transform:uppercase;font-weight:600;margin-bottom:.75rem}
+.rec-h2{font-family:'DM Serif Display',serif;font-size:clamp(24px,3vw,38px);color:white;line-height:1.15;margin-bottom:.75rem}
+.rec-sub{font-size:14px;color:rgba(255,255,255,.45);max-width:500px;margin-bottom:2.5rem}
+.recgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.rcrd{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1.75rem;transition:all .2s}
+.rcrd:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.2)}
+.rc-type{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:.75rem}
+.rc-type.bach{color:#86efac}.rc-type.fam{color:#93c5fd}.rc-type.lux{color:var(--gold2)}
+.rc-h{font-family:'DM Serif Display',serif;font-size:20px;color:white;margin-bottom:.4rem;line-height:1.2}
+.rc-tag{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:1.25rem;line-height:1.5}
+.rclist{list-style:none;display:flex;flex-direction:column;gap:9px}
+.rclist li{display:flex;gap:9px;font-size:12px;color:rgba(255,255,255,.6);line-height:1.45}
+.rclist li::before{content:'→';color:var(--teal2);flex-shrink:0;font-weight:600}
+.rclist li strong{color:white;font-weight:600}
+#insights{background:var(--paper2);padding:3rem 2.5rem}
+.ins-toggle-bar{max-width:1100px;margin:0 auto;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;background:white;border:1px solid var(--paper3);border-radius:10px;padding:1.25rem 1.5rem;transition:all .2s}
+.ins-toggle-bar:hover{border-color:var(--teal);background:var(--teal3)}
+.ins-toggle-left{display:flex;align-items:center;gap:1rem}
+.ins-toggle-icon{width:40px;height:40px;border-radius:50%;background:var(--teal3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ins-toggle-title{font-size:15px;font-weight:600;color:var(--ink)}
+.ins-toggle-sub{font-size:12px;color:var(--ink3)}
+.ins-chevron{font-size:18px;color:var(--teal);transition:transform .3s;flex-shrink:0}
+.ins-chevron.open{transform:rotate(180deg)}
+.ins-body-wrap{max-width:1100px;margin:0 auto;overflow:hidden;max-height:0;transition:max-height .6s ease}
+.ins-body-wrap.open{max-height:9999px}
+.ins-inner{padding-top:1.5rem}
+.ins-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.itab{padding:7px 16px;font-size:12px;border:1px solid var(--paper3);border-radius:20px;cursor:pointer;background:white;color:var(--ink2);font-family:'DM Sans',sans-serif;transition:all .2s}
+.itab.on{background:var(--teal);color:white;border-color:var(--teal)}
+.igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.875rem}
+.icard{background:white;border:1px solid var(--paper3);border-radius:8px;padding:1.25rem;transition:all .2s}
+.icard:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.06);border-color:var(--teal3)}
+.inum{font-size:10px;font-weight:600;color:var(--teal);letter-spacing:1px;margin-bottom:4px}
+.ititle{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;line-height:1.3}
+.ibody{font-size:11px;color:var(--ink2);line-height:1.55}
+.itag{display:inline-block;font-size:9px;padding:2px 7px;border-radius:8px;font-weight:600;margin-bottom:6px;letter-spacing:.4px}
+.iaction{font-size:10px;color:var(--teal);font-weight:600;margin-top:7px;padding-top:7px;border-top:1px solid var(--paper2)}
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:2.5rem;text-align:center;color:rgba(255,255,255,.3);font-size:12px}
+footer strong{color:rgba(255,255,255,.7);font-family:'DM Serif Display',serif;font-size:16px;display:block;margin-bottom:.3rem}
+@media(max-width:768px){
+  .hero-inner,.g2,.g3,.recgrid,.amgrid,.pick-grid,.answer-grid{grid-template-columns:1fr}
+  .kstrip{grid-template-columns:repeat(2,1fr)}.budget-results{grid-template-columns:repeat(2,1fr)}
+  section.dash,#solver,#recs,#insights{padding:3.5rem 1.25rem}nav{padding:0 1.25rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Bengaluru<span>Rentals</span></div>
+  <div class="nav-links">
+    <a href="#solver" class="act">Find a Home</a>
+    <a href="#overview">Market</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#investment">Invest</a>
+    <a href="#amenities">Amenities</a>
+    <a href="#recs">Guide</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eye">Bengaluru Rental Intelligence · 2024</div>
+      <h1 class="hero-h1">Stop Guessing.<br>Start Knowing<br>Where to <em>Rent or Build.</em></h1>
+      <p class="hero-sub">2,570 rental listings analysed across 8 Bengaluru localities. Instant answers for tenants, builders, and investors — no spreadsheets required.</p>
+      <div class="hero-btns">
+        <a href="#solver" class="btn-p">Find My Locality →</a>
+        <a href="#investment" class="btn-s">Investment Guide</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-v">2,570<sup>+</sup></div><div class="hstat-l">Listings Analysed</div></div>
+      <div class="hstat"><div class="hstat-v">8</div><div class="hstat-l">Localities Covered</div></div>
+      <div class="hstat"><div class="hstat-v">₹17k</div><div class="hstat-l">Average Rent</div></div>
+      <div class="hstat"><div class="hstat-v">50<sup>+</sup></div><div class="hstat-l">Business Insights</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM SOLVER — FRONT AND CENTER ═══ -->
+<section id="solver">
+  <div class="solver-inner">
+    <div class="solver-head">
+      <div class="eyebrow">Instant Answers</div>
+      <h2 class="h2">What do <em>you</em> need to know?</h2>
+      <p class="subdesc">Pick your goal. Get the answer immediately.</p>
+    </div>
+    <div class="ptabs">
+      <button class="ptab on" onclick="switchProblem('tenant')" id="ptab-tenant"><span class="ptab-icon">🏠</span> I'm looking for a home</button>
+      <button class="ptab" onclick="switchProblem('budget')" id="ptab-budget"><span class="ptab-icon">💰</span> I have a budget</button>
+      <button class="ptab" onclick="switchProblem('builder')" id="ptab-builder"><span class="ptab-icon">🏗️</span> I want to build / invest</button>
+      <button class="ptab" onclick="switchProblem('compare')" id="ptab-compare"><span class="ptab-icon">⚖️</span> Compare two localities</button>
+    </div>
+
+    <!-- Looking for home -->
+    <div class="ppage on" id="pp-tenant">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div style="font-size:13px;color:var(--ink3);margin-bottom:1rem">Who are you?</div>
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+          <button class="bhk-btn on" onclick="showTenantType('bachelor',this)">Single / Bachelor</button>
+          <button class="bhk-btn" onclick="showTenantType('family',this)">Family</button>
+          <button class="bhk-btn" onclick="showTenantType('luxury',this)">Luxury Tenant</button>
+        </div>
+      </div>
+      <div id="tt-bachelor">
+        <div class="answer-grid">
+          <div class="ans-card green"><div class="ans-rank green">★ BEST VALUE</div><div class="ans-loc">Electronic City</div><div class="ans-rent">₹8,456 <span style="font-size:13px;color:var(--ink3);font-weight:400">avg 1BHK</span></div><div class="ans-row"><span>Avg rent (1BHK)</span><strong>₹8,456</strong></div><div class="ans-row"><span>Bachelor listings</span><strong>29 units</strong></div><div class="ans-row"><span>Commute to IT parks</span><strong>5–15 min</strong></div><div class="ans-row"><span>Deposit needed</span><strong>~₹55,000</strong></div><div class="ans-why"><span>Why:</span> Closest to Infosys, Wipro & TCS. Lowest entry cost. Best salary-to-rent ratio in the city.</div></div>
+          <div class="ans-card blue"><div class="ans-rank blue">★ MOST OPTIONS</div><div class="ans-loc">Whitefield</div><div class="ans-rent">₹8,500–13,000</div><div class="ans-row"><span>Bachelor listings</span><strong>26 units</strong></div><div class="ans-row"><span>Metro connectivity</span><strong>Excellent</strong></div><div class="ans-row"><span>Cafes & lifestyle</span><strong>Best in city</strong></div><div class="ans-row"><span>Deposit needed</span><strong>~₹70,000</strong></div><div class="ans-why"><span>Why:</span> Widest selection, premium lifestyle, great metro access. Pay slightly more for significantly better quality of life.</div></div>
+          <div class="ans-card gold"><div class="ans-rank gold">★ BUDGET PICK</div><div class="ans-loc">Yelahanka</div><div class="ans-rent">₹5,000–7,500</div><div class="ans-row"><span>1BHK count</span><strong>48 units</strong></div><div class="ans-row"><span>Environment</span><strong>Peaceful, green</strong></div><div class="ans-row"><span>Best for</span><strong>GKVK / Manyata</strong></div><div class="ans-row"><span>Deposit needed</span><strong>~₹40,000</strong></div><div class="ans-why"><span>Why:</span> Cheapest 1BHK in north Bengaluru. Perfect if your office is in Hebbal, Manyata Tech Park, or GKVK area.</div></div>
+        </div>
+        <div class="ans-card" style="background:var(--teal3);border-color:var(--teal2)"><div style="font-size:12px;font-weight:600;color:var(--teal);margin-bottom:6px">💡 PRO TIP FOR BACHELORS</div><div style="font-size:13px;color:var(--ink2);line-height:1.6">Choose <strong>semi-furnished</strong> over fully furnished — you pay the same rent (~₹18k) but keep flexibility to personalise. Avoid unfurnished units — they command ₹8,000/month less in value. In Electronic City, look for Apartment Complex (AP) buildings on floors 3+ with a lift — they rent 30% faster than independent floors.</div></div>
+      </div>
+      <div id="tt-family" style="display:none">
+        <div class="answer-grid">
+          <div class="ans-card green"><div class="ans-rank green">★ PREMIUM FAMILY CHOICE</div><div class="ans-loc">Bellandur</div><div class="ans-rent">₹25,949 <span style="font-size:13px;color:var(--ink3);font-weight:400">avg rent</span></div><div class="ans-row"><span>Avg home size</span><strong>1,616 sqft</strong></div><div class="ans-row"><span>3BHK share</span><strong>51%</strong></div><div class="ans-row"><span>Pool availability</span><strong>48%</strong></div><div class="ans-row"><span>Family listings</span><strong>148 units</strong></div><div class="ans-why"><span>Why:</span> Biggest homes, best amenities, close to ORR tech corridor. The top choice if budget allows.</div></div>
+          <div class="ans-card blue"><div class="ans-rank blue">★ BEST BALANCE</div><div class="ans-loc">Whitefield</div><div class="ans-rent">₹20,268 <span style="font-size:13px;color:var(--ink3);font-weight:400">avg rent</span></div><div class="ans-row"><span>Avg home size</span><strong>1,297 sqft</strong></div><div class="ans-row"><span>3BHK count</span><strong>241 units</strong></div><div class="ans-row"><span>Family listings</span><strong>328 units</strong></div><div class="ans-row"><span>Schools nearby</span><strong>Excellent</strong></div><div class="ans-why"><span>Why:</span> Most 3BHK options in the city, strong school ecosystem, great community. The safest family choice.</div></div>
+          <div class="ans-card gold"><div class="ans-rank gold">★ VALUE FOR FAMILIES</div><div class="ans-loc">Yelahanka</div><div class="ans-rent">₹14,641 <span style="font-size:13px;color:var(--ink3);font-weight:400">avg rent</span></div><div class="ans-row"><span>Avg home size</span><strong>1,125 sqft</strong></div><div class="ans-row"><span>Family listings</span><strong>203 units</strong></div><div class="ans-row"><span>Environment</span><strong>Very green</strong></div><div class="ans-row"><span>Deposit needed</span><strong>~₹1.4L</strong></div><div class="ans-why"><span>Why:</span> 203 family-listed units, green neighbourhood, best price-to-space ratio for families in the city.</div></div>
+        </div>
+        <div class="ans-card" style="background:var(--blue2);border-color:#93c5fd"><div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:6px">💡 PRO TIP FOR FAMILIES</div><div style="font-size:13px;color:var(--ink2);line-height:1.6">Always choose <strong>Apartment Complex (AP)</strong> buildings — 84% in Bellandur have lifts vs only 15% for independent floors. Look for gym + pool + lift together — these three amenities add over ₹17,000/month to rental value, signalling premium, well-managed buildings. Request a <strong>"FAMILY" lease type</strong> listing for a quieter environment.</div></div>
+      </div>
+      <div id="tt-luxury" style="display:none">
+        <div class="answer-grid">
+          <div class="ans-card rose"><div class="ans-rank rose">★ UNDISPUTED #1</div><div class="ans-loc">Bellandur</div><div class="ans-rent">₹25,949+ <span style="font-size:13px;color:var(--ink3);font-weight:400">avg rent</span></div><div class="ans-row"><span>Gym access</span><strong>51% of listings</strong></div><div class="ans-row"><span>Pool access</span><strong>48% of listings</strong></div><div class="ans-row"><span>Lift access</span><strong>84% of listings</strong></div><div class="ans-row"><span>Avg home size</span><strong>1,616 sqft</strong></div><div class="ans-why"><span>Why:</span> Highest amenity density, biggest homes, premium address. The only locality that ticks every luxury box.</div></div>
+          <div class="ans-card gold"><div class="ans-rank gold">★ BOUTIQUE LUXURY</div><div class="ans-loc">Brookefield</div><div class="ans-rent">₹20,619 <span style="font-size:13px;color:var(--ink3);font-weight:400">avg rent</span></div><div class="ans-row"><span>Gym access</span><strong>49% of listings</strong></div><div class="ans-row"><span>Pool access</span><strong>44% of listings</strong></div><div class="ans-row"><span>Supply (exclusivity)</span><strong>Only 138 units</strong></div><div class="ans-row"><span>Avg home size</span><strong>1,347 sqft</strong></div><div class="ans-why"><span>Why:</span> Near-identical amenities to Bellandur but quieter, more exclusive. Fewer neighbours. Premium feel without congestion.</div></div>
+          <div class="ans-card blue"><div class="ans-rank blue">★ WIDEST LUXURY CHOICE</div><div class="ans-loc">Whitefield</div><div class="ans-rent">₹20k–75k <span style="font-size:12px;color:var(--ink3);font-weight:400">range</span></div><div class="ans-row"><span>4BHK+ units</span><strong>33 luxury units</strong></div><div class="ans-row"><span>Fully furnished</span><strong>96 units</strong></div><div class="ans-row"><span>Max rent seen</span><strong>₹75,000/mo</strong></div><div class="ans-row"><span>Gym access</span><strong>53% of listings</strong></div><div class="ans-why"><span>Why:</span> Best selection of 4BHK+ penthouses and the city's largest fully-furnished luxury stock.</div></div>
+        </div>
+        <div class="ans-card" style="background:#fdecd7;border-color:#f5a847"><div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:6px">💡 PRO TIP FOR LUXURY TENANTS</div><div style="font-size:13px;color:var(--ink2);line-height:1.6">Seek out <strong>Independent Houses (IH)</strong> in Bellandur or Whitefield — they average ₹23,753/month and offer unmatched privacy. For plug-and-play luxury, Whitefield has the city's largest stock of <strong>fully furnished units</strong> (96 listings). Always insist on buildings with all 3 core amenities — gym + pool + lift — as this signals professional property management.</div></div>
+      </div>
+    </div>
+
+    <!-- Budget finder -->
+    <div class="ppage" id="pp-budget">
+      <div class="budget-finder">
+        <div class="budget-label">My monthly rent budget</div>
+        <div class="budget-slider-row">
+          <input type="range" id="budget-slider" min="5000" max="40000" step="1000" value="15000" oninput="updateBudget()">
+          <div class="budget-val" id="budget-display">₹15,000</div>
+        </div>
+        <div style="font-size:13px;color:var(--ink2);margin-bottom:.75rem">I need a:</div>
+        <div class="bhk-btns" id="bhk-selector">
+          <button class="bhk-btn" onclick="selectBHK('RK1',this)">RK1</button>
+          <button class="bhk-btn on" onclick="selectBHK('BHK1',this)">1 BHK</button>
+          <button class="bhk-btn" onclick="selectBHK('BHK2',this)">2 BHK</button>
+          <button class="bhk-btn" onclick="selectBHK('BHK3',this)">3 BHK</button>
+        </div>
+        <div class="budget-results" id="budget-results"></div>
+      </div>
+    </div>
+
+    <!-- Builder/Investor -->
+    <div class="ppage" id="pp-builder">
+      <div class="answer-grid">
+        <div class="ans-card gold"><div class="ans-rank gold">★ HIGHEST RENTAL YIELD</div><div class="ans-loc">Bellandur</div><div class="ans-rent">₹18.02/sqft</div><div class="ans-row"><span>Avg monthly rent</span><strong>₹25,949</strong></div><div class="ans-row"><span>Avg deposit</span><strong>₹1,94,087</strong></div><div class="ans-row"><span>Best unit</span><strong>2BHK, 1,000–1,400 sqft</strong></div><div class="ans-row"><span>Amenities needed</span><strong>Gym + Pool + Lift</strong></div><div class="ans-why"><span>Best for:</span> Premium 2–3BHK apartments. Highest rent per sqft in the city. Never skip gym/pool/lift here.</div></div>
+        <div class="ans-card green"><div class="ans-rank green">★ BEST OPPORTUNITY GAP</div><div class="ans-loc">Brookefield</div><div class="ans-rent">₹16.83/sqft</div><div class="ans-row"><span>Avg monthly rent</span><strong>₹20,619</strong></div><div class="ans-row"><span>Current supply</span><strong>Only 138 listings</strong></div><div class="ans-row"><span>Demand signal</span><strong>High, undersupplied</strong></div><div class="ans-row"><span>Best unit</span><strong>2BHK & 3BHK</strong></div><div class="ans-why"><span>Best for:</span> First-mover developers. Premium rents with zero saturation. Fastest absorption in the city.</div></div>
+        <div class="ans-card rose"><div class="ans-rank rose">★ HIGHEST VOLUME MARKET</div><div class="ans-loc">Whitefield</div><div class="ans-rent">₹16.17/sqft</div><div class="ans-row"><span>Avg monthly rent</span><strong>₹20,268</strong></div><div class="ans-row"><span>Market liquidity</span><strong>Highest (745 listings)</strong></div><div class="ans-row"><span>Best unit</span><strong>2BHK, 1,100–1,400 sqft</strong></div><div class="ans-row"><span>Risk level</span><strong>Lowest in city</strong></div><div class="ans-why"><span>Best for:</span> Risk-averse investors. Proven demand, easiest exit. Build volume — 2BHK fills fastest.</div></div>
+      </div>
+      <div style="margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="ans-card blue"><div class="ans-rank blue">★ EMERGING — BUY NOW</div><div class="ans-loc">K.R. Puram</div><div class="ans-rent">₹13.12/sqft now</div><div class="ans-row"><span>Current avg rent</span><strong>₹11,032</strong></div><div class="ans-row"><span>Supply gap</span><strong>Only 118 listings</strong></div><div class="ans-row"><span>Growth potential</span><strong>30–50% in 5 years</strong></div><div class="ans-why"><span>Best for:</span> 5-year investors. Lowest land cost + improving metro connectivity = highest appreciation potential.</div></div>
+        <div class="ans-card" style="border-top:3px solid var(--teal);background:var(--teal3)"><div style="font-size:12px;font-weight:600;color:var(--teal);margin-bottom:8px">🏗️ WHAT TO BUILD — EVERYWHERE</div><div style="font-size:12px;color:var(--ink2);line-height:1.8"><strong>Unit type:</strong> Always 2BHK — 49% of all market demand<br><strong>Amenities:</strong> Gym + Pool + Lift = +₹17,000/month rent premium<br><strong>Furnishing:</strong> Semi-furnish only — same rent as fully furnished<br><strong>Building:</strong> Apartment Complex earns 94% more than independent floors<br><strong>Rule:</strong> Never build above 2 floors without a lift</div></div>
+      </div>
+    </div>
+
+    <!-- Compare -->
+    <div class="ppage" id="pp-compare">
+      <div class="compare-tool">
+        <div class="compare-head">Compare any two localities head-to-head</div>
+        <div class="compare-selects">
+          <select id="cmp-a">
+            <option value="0">Whitefield</option><option value="1">Electronic City</option><option value="2">Yelahanka</option><option value="3">Bellandur</option><option value="4">Kaggadasapura</option><option value="5">Brookefield</option><option value="6">Varthur</option><option value="7">K.R. Puram</option>
+          </select>
+          <span class="cmp-vs">vs</span>
+          <select id="cmp-b">
+            <option value="3">Bellandur</option><option value="0">Whitefield</option><option value="1">Electronic City</option><option value="2">Yelahanka</option><option value="4">Kaggadasapura</option><option value="5">Brookefield</option><option value="6">Varthur</option><option value="7">K.R. Puram</option>
+          </select>
+          <button class="cmp-btn" onclick="runCompare()">Compare →</button>
+        </div>
+        <div class="cmp-result" id="cmp-result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KPI STRIP -->
+<div id="kpis">
+  <div class="kstrip">
+    <div class="kblock"><div class="kval">₹25,949</div><div class="klbl">Peak Avg Rent — Bellandur</div></div>
+    <div class="kblock"><div class="kval">₹11,032</div><div class="klbl">Entry Rent — K.R. Puram</div></div>
+    <div class="kblock"><div class="kval">₹18.02</div><div class="klbl">Best Yield/sqft</div></div>
+    <div class="kblock"><div class="kval">68%</div><div class="klbl">Pool Rent Premium</div></div>
+    <div class="kblock"><div class="kval">745</div><div class="klbl">Listings — Whitefield</div></div>
+  </div>
+</div>
+
+<!-- DASHBOARD 1 -->
+<section id="overview" class="dash">
+  <div class="sec-inner">
+    <div class="sec-head"><span class="eyebrow">Dashboard 01</span><h2>Market <em>Overview</em></h2><div class="div3"></div><p>Property supply, type distribution, and market character across all 8 localities.</p></div>
+    <div class="g2" style="margin-bottom:1.25rem">
+      <div class="chart-card"><div class="ch">Total listings by locality</div><div class="cs">Rental supply — bigger bar = more competition for builders</div><div class="blist" id="b-supply"></div></div>
+      <div class="chart-card"><div class="ch">Property type split</div><div class="cs">BHK2 dominates at 49% — the safest bet for investors</div><div class="leg-row"><span class="leg"><span class="legsq" style="background:#1a6b5a"></span>BHK2</span><span class="leg"><span class="legsq" style="background:#d46c1a"></span>BHK3</span><span class="leg"><span class="legsq" style="background:#2b4fa0"></span>BHK1</span><span class="leg"><span class="legsq" style="background:#b84242"></span>BHK4+</span><span class="leg"><span class="legsq" style="background:#888"></span>RK1</span></div><div style="position:relative;height:230px"><canvas id="c1-pie"></canvas></div></div>
+    </div>
+    <div class="chart-card" style="margin-bottom:1.25rem"><div class="ch">BHK mix by locality — stacked</div><div class="cs">Bellandur = family-large; Electronic City = bachelor-small</div><div class="leg-row"><span class="leg"><span class="legsq" style="background:#888"></span>RK1</span><span class="leg"><span class="legsq" style="background:#2b4fa0"></span>BHK1</span><span class="leg"><span class="legsq" style="background:#1a6b5a"></span>BHK2</span><span class="leg"><span class="legsq" style="background:#d46c1a"></span>BHK3</span><span class="leg"><span class="legsq" style="background:#b84242"></span>BHK4+</span></div><div style="position:relative;height:270px"><canvas id="c1-stacked"></canvas></div></div>
+    <div class="g2">
+      <div class="chart-card"><div class="ch">Building type distribution</div><div class="cs">AP earns 94% more than independent floors</div><div style="position:relative;height:210px"><canvas id="c1-btype"></canvas></div></div>
+      <div class="chart-card"><div class="ch">Locality comparison heatmap</div><div class="cs">Deeper green = stronger performance across all metrics</div><div class="hmwrap"><table class="hmtbl" id="hmtbl"></table></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD 2 -->
+<section id="pricing" class="dash alt">
+  <div class="sec-inner">
+    <div class="sec-head"><span class="eyebrow">Dashboard 02</span><h2>Rental Price <em>Intelligence</em></h2><div class="div3"></div><p>Rent patterns by locality, BHK type, furnishing and building format.</p></div>
+    <div class="g2" style="margin-bottom:1.25rem">
+      <div class="chart-card"><div class="ch">Average rent by locality</div><div class="cs">Bellandur commands 135% more than K.R. Puram</div><div class="blist" id="b-rent"></div></div>
+      <div class="chart-card"><div class="ch">Average rent by BHK type</div><div class="cs">3BHK earns 174% more than 1BHK — scale up for higher returns</div><div style="position:relative;height:260px"><canvas id="c2-bhkrent"></canvas></div></div>
+    </div>
+    <div class="chart-card" style="margin-bottom:1.25rem"><div class="ch">Rent vs property size — scatter plot</div><div class="cs">Each dot = one property. Shows value-for-size across all localities.</div><div class="leg-row" id="sc-leg"></div><div style="position:relative;height:300px"><canvas id="c2-scatter"></canvas></div></div>
+    <div class="g3">
+      <div class="chart-card"><div class="ch">Furnishing impact on rent</div><div class="cs">Semi = Fully in rent. Unfurnished = ₹8k/month penalty</div><div style="position:relative;height:190px"><canvas id="c2-furn"></canvas></div></div>
+      <div class="chart-card"><div class="ch">Building type vs rent</div><div class="cs">IH earns 19% more than AP — privacy has a price</div><div style="position:relative;height:190px"><canvas id="c2-btype-r"></canvas></div></div>
+      <div class="chart-card"><div class="ch">Budget vs premium split</div><div class="cs">Market is near-equally split at ₹15,000 median</div><div style="position:relative;height:190px"><canvas id="c2-split"></canvas></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD 3 -->
+<section id="investment" class="dash">
+  <div class="sec-inner">
+    <div class="sec-head"><span class="eyebrow">Dashboard 03</span><h2>Investment <em>Analysis</em></h2><div class="div3"></div><p>Rent-per-sqft efficiency, deposit multiples, and top picks for investors and builders.</p></div>
+    <div class="g2" style="margin-bottom:1.25rem">
+      <div class="chart-card dark"><div class="ch">Rent per square foot (₹/sqft/month)</div><div class="cs">Higher PSF = better yield on construction cost</div><div class="dblist" id="b-psf"></div></div>
+      <div class="chart-card"><div class="ch">Average property size by locality</div><div class="cs">Bellandur homes are 83% larger than K.R. Puram's</div><div class="blist" id="b-size"></div></div>
+    </div>
+    <div class="g2" style="margin-bottom:1.5rem">
+      <div class="chart-card"><div class="ch">Security deposit by locality (₹)</div><div class="cs">Bellandur deposits are 130% higher than Electronic City</div><div style="position:relative;height:250px"><canvas id="c3-deposit"></canvas></div></div>
+      <div class="chart-card"><div class="ch">Deposit-to-rent multiple</div><div class="cs">How many months' rent is required as deposit</div><div class="blist" id="b-dtr"></div></div>
+    </div>
+    <div style="margin-bottom:1rem"><div class="eyebrow">Top Investment Picks</div></div>
+    <div class="pick-grid">
+      <div class="pick" style="border-top-color:#1a6b5a"><span class="pick-badge" style="background:#d4ede8;color:#1a6b5a">Best Overall</span><div class="pick-loc">Whitefield</div><div class="pick-rent">₹20,268</div><div class="pick-row"><span>Rent/sqft</span><strong>₹16.17</strong></div><div class="pick-row"><span>Listings</span><strong>745</strong></div><div class="pick-row"><span>Risk</span><strong>Lowest</strong></div></div>
+      <div class="pick" style="border-top-color:#b84242"><span class="pick-badge" style="background:#f5dada;color:#b84242">Highest Yield</span><div class="pick-loc">Bellandur</div><div class="pick-rent">₹25,949</div><div class="pick-row"><span>Rent/sqft</span><strong>₹18.02</strong></div><div class="pick-row"><span>Listings</span><strong>313</strong></div><div class="pick-row"><span>Risk</span><strong>Low</strong></div></div>
+      <div class="pick" style="border-top-color:#d46c1a"><span class="pick-badge" style="background:#fdecd7;color:#d46c1a">Undersupplied</span><div class="pick-loc">Brookefield</div><div class="pick-rent">₹20,619</div><div class="pick-row"><span>Rent/sqft</span><strong>₹16.83</strong></div><div class="pick-row"><span>Listings</span><strong>138</strong></div><div class="pick-row"><span>Risk</span><strong>Low-Med</strong></div></div>
+      <div class="pick" style="border-top-color:#2b4fa0"><span class="pick-badge" style="background:#dde5f7;color:#2b4fa0">Emerging</span><div class="pick-loc">K.R. Puram</div><div class="pick-rent">₹11,032</div><div class="pick-row"><span>Rent/sqft</span><strong>₹13.12</strong></div><div class="pick-row"><span>Listings</span><strong>118</strong></div><div class="pick-row"><span>Growth potential</span><strong>High</strong></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD 4 -->
+<section id="amenities" class="dash alt">
+  <div class="sec-inner">
+    <div class="sec-head"><span class="eyebrow">Dashboard 04</span><h2>Amenities &amp; <em>Lifestyle</em></h2><div class="div3"></div><p>How amenities drive rent premiums. The three numbers every builder needs before designing their next project.</p></div>
+    <div class="amgrid">
+      <div class="amcard t"><div class="am-name">Gym</div><div class="am-pct">+63%</div><div class="am-diff">₹22,684 with gym<br><strong>vs ₹13,888 without</strong></div></div>
+      <div class="amcard b"><div class="am-name">Swimming Pool</div><div class="am-pct">+68%</div><div class="am-diff">₹23,539 with pool<br><strong>vs ₹14,034 without</strong></div></div>
+      <div class="amcard g"><div class="am-name">Lift / Elevator</div><div class="am-pct">+67%</div><div class="am-diff">₹20,794 with lift<br><strong>vs ₹12,465 without</strong></div></div>
+    </div>
+    <div class="g2" style="margin-bottom:1.25rem">
+      <div class="chart-card"><div class="ch">Amenity coverage by locality (%)</div><div class="cs">Bellandur leads; K.R. Puram has near-zero — a builder opportunity</div><div style="position:relative;height:270px"><canvas id="c4-pct"></canvas></div></div>
+      <div class="chart-card"><div class="ch">With vs without amenity — avg rent (₹)</div><div class="cs">Each pair shows exact rent premium each amenity delivers</div><div style="position:relative;height:270px"><canvas id="c4-impact"></canvas></div></div>
+    </div>
+    <div class="g2">
+      <div class="chart-card"><div class="ch">Furnishing mix by locality</div><div class="cs">79% semi-furnished city-wide — the market standard</div><div class="leg-row"><span class="leg"><span class="legsq" style="background:#1a6b5a"></span>Fully furnished</span><span class="leg"><span class="legsq" style="background:#2b4fa0"></span>Semi-furnished</span><span class="leg"><span class="legsq" style="background:#888"></span>Unfurnished</span></div><div style="position:relative;height:240px"><canvas id="c4-furn"></canvas></div></div>
+      <div class="chart-card"><div class="ch">Lease type by locality</div><div class="cs">Most landlords use open listings — reduces vacancy risk</div><div style="position:relative;height:240px"><canvas id="c4-lease"></canvas></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TENANT RECS -->
+<section id="recs">
+  <div class="sec-inner">
+    <div class="rec-eye">Tenant Guide</div>
+    <div class="rec-h2">Find Your Perfect Bengaluru Home</div>
+    <p class="rec-sub">Personalised locality picks for different budgets and lifestyles — based on 2,570 real listings.</p>
+    <div class="recgrid">
+      <div class="rcrd"><div class="rc-type bach">For Bachelors & Young Professionals</div><div class="rc-h">Budget-Smart Living</div><div class="rc-tag">IT commute + low cost + bachelor listings</div><ul class="rclist"><li><strong>Electronic City</strong> — ₹8,456 avg 1BHK; closest to Infosys/Wipro; 29 bachelor units</li><li><strong>Whitefield</strong> — 26 bachelor units; metro access; 1BHK ₹7,000–13,000</li><li><strong>Yelahanka</strong> — cheapest 1BHK from ₹5,000; best for Manyata/Hebbal workers</li><li><strong>Kaggadasapura</strong> — ₹8–10k 1BHK; walk to ITPL tech park</li><li><strong>Tip:</strong> Semi-furnished = same rent as fully furnished, far less hassle</li></ul></div>
+      <div class="rcrd"><div class="rc-type fam">For Families</div><div class="rc-h">Space & Community First</div><div class="rc-tag">Larger homes, good schools, amenity-rich buildings</div><ul class="rclist"><li><strong>Bellandur</strong> — 1,616 sqft avg; 51% BHK3+; 48% pool; top school zone</li><li><strong>Whitefield</strong> — 1,297 sqft avg; 241 BHK3 units; 328 family listings</li><li><strong>Brookefield</strong> — 1,347 sqft avg; quieter; boutique premium supply</li><li><strong>Yelahanka</strong> — 203 family units; greenest area; best value for space</li><li><strong>Tip:</strong> Choose Apartment Complex + lift for safety and community feel</li></ul></div>
+      <div class="rcrd"><div class="rc-type lux">For Luxury Tenants</div><div class="rc-h">Premium Lifestyle Districts</div><div class="rc-tag">Full amenities, large homes, prestigious addresses</div><ul class="rclist"><li><strong>Bellandur</strong> — 51% gym, 48% pool, 84% lift; undisputed luxury capital</li><li><strong>Brookefield</strong> — 49% gym, 44% pool; exclusive boutique feel; fewer listings</li><li><strong>Whitefield</strong> — 4BHK+ penthouses ₹70k+; largest luxury stock</li><li><strong>Tip:</strong> Independent Houses (IH) signal better-maintained premium properties</li><li><strong>Avoid:</strong> K.R. Puram & Electronic City for luxury needs</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 50 INSIGHTS — COLLAPSED AT BOTTOM ═══ -->
+<section id="insights">
+  <div class="ins-toggle-bar" onclick="toggleInsights()">
+    <div class="ins-toggle-left">
+      <div class="ins-toggle-icon"><svg width="20" height="20" fill="none" stroke="#1a6b5a" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+      <div><div class="ins-toggle-title">50+ Detailed Market Insights</div><div class="ins-toggle-sub">Pricing · Investment · Supply · Amenities · Tenant demand — click to expand</div></div>
+    </div>
+    <div class="ins-chevron" id="ins-chev">▼</div>
+  </div>
+  <div class="ins-body-wrap" id="ins-body">
+    <div class="ins-inner" style="max-width:1100px;margin:0 auto">
+      <div class="ins-tabs">
+        <button class="itab on" onclick="filterIns('all',this)">All (50)</button>
+        <button class="itab" onclick="filterIns('pricing',this)">Pricing</button>
+        <button class="itab" onclick="filterIns('invest',this)">Investment</button>
+        <button class="itab" onclick="filterIns('supply',this)">Supply</button>
+        <button class="itab" onclick="filterIns('amenity',this)">Amenities</button>
+        <button class="itab" onclick="filterIns('tenant',this)">Tenants</button>
+      </div>
+      <div class="igrid" id="ins-grid"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>Bengaluru<span style="color:#2a9478">Rentals</span> Intelligence</strong>
+  2,570 listings · 8 localities · Bellandur · Whitefield · Brookefield · Electronic City · Varthur · Yelahanka · Kaggadasapura · K.R. Puram · 2024
+</footer>
+
+<script>
+const D={locs:['Whitefield','Elec. City','Yelahanka','Bellandur','Kaggadasapura','Brookefield','Varthur','K.R.Puram'],listings:[745,630,341,313,155,138,130,118],avgRent:[20268,12576,14641,25949,15844,20619,14475,11032],rentPSF:[16.17,14.06,13.24,18.02,16.10,16.83,14.27,13.12],avgSize:[1297,968,1125,1616,1037,1347,1026,883],deposit:[144894,84284,140889,194087,119019,151689,98669,97309],gym:[0.533,0.311,0.364,0.508,0.116,0.493,0.346,0.068],pool:[0.470,0.256,0.337,0.482,0.065,0.442,0.346,0.059],lift:[0.679,0.527,0.449,0.840,0.497,0.710,0.492,0.153],bhk1:[96,147,48,19,26,15,15,32],bhk2:[350,312,174,118,93,65,84,69],bhk3:[241,137,105,159,32,51,24,12],bhk4p:[33,5,6,13,1,5,1,0],rk1:[25,29,8,4,3,2,6,5],furnFF:[96,77,13,66,7,35,6,1],furnSF:[602,472,270,238,145,97,114,91],furnNF:[47,81,58,9,3,6,10,26],leaseAny:[389,377,133,157,72,66,57,44],leaseFamily:[328,234,203,148,79,71,72,71],leaseBach:[26,19,4,7,4,1,1,3]};
+const C8=['#1a6b5a','#2b4fa0','#d46c1a','#b84242','#7c3aed','#d97706','#0891b2','#6b7280'];
+const T='#1a6b5a',B='#2b4fa0',A='#d46c1a',R='#b84242',G='#c8973a';
+function mkBars(id,labels,vals,color,fmt,max){const el=document.getElementById(id);if(!el)return;const mx=max||Math.max(...vals);const pairs=labels.map((l,i)=>({l,v:vals[i]})).sort((a,b)=>b.v-a.v);el.innerHTML=pairs.map(({l,v})=>`<div class="br"><div class="bn">${l}</div><div class="bt"><div class="bf" style="width:${Math.round(v/mx*100)}%;background:${color}"></div></div><div class="bv">${fmt(v)}</div></div>`).join('')}
+function mkDarkBars(pairs){const el=document.getElementById('b-psf');if(!el)return;const mx=Math.max(...pairs.map(x=>x.v));el.innerHTML=pairs.sort((a,b)=>b.v-a.v).map(({l,v},i)=>`<div class="dbr"><div class="dbn">${l}</div><div class="dbt"><div class="dbf" style="width:${Math.round(v/mx*100)}%;background:${C8[i]||'#888'}"></div></div><div class="dbv">₹${v.toFixed(2)}</div></div>`).join('')}
+function initCharts(){
+  mkBars('b-supply',D.locs,D.listings,T,v=>v.toLocaleString());
+  new Chart(document.getElementById('c1-pie'),{type:'doughnut',data:{labels:['BHK2','BHK3','BHK1','BHK4+','RK1'],datasets:[{data:[1265,761,398,64,82],backgroundColor:[T,A,B,R,'#888'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'62%'}});
+  new Chart(document.getElementById('c1-stacked'),{type:'bar',data:{labels:D.locs,datasets:[{label:'RK1',data:D.rk1,backgroundColor:'#888'},{label:'BHK1',data:D.bhk1,backgroundColor:B},{label:'BHK2',data:D.bhk2,backgroundColor:T},{label:'BHK3',data:D.bhk3,backgroundColor:A},{label:'BHK4+',data:D.bhk4p,backgroundColor:R}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,grid:{color:'#f0ede6'}}},plugins:{legend:{display:false}}}});
+  new Chart(document.getElementById('c1-btype'),{type:'bar',data:{labels:['Apartment (AP)','Indep. Floor (IF)','Indep. House (IH)'],datasets:[{data:[1720,739,104],backgroundColor:[T,B,A],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#f0ede6'}},x:{grid:{display:false}}}}});
+  const cols=['Locality','Listings','Avg Rent','₹/sqft','Avg Size','Deposit'];
+  const rowData=D.locs.map((l,i)=>[l,D.listings[i],'₹'+D.avgRent[i].toLocaleString(),'₹'+D.rentPSF[i].toFixed(1),D.avgSize[i]+' ft²','₹'+Math.round(D.deposit[i]/1000)+'k']);
+  const heatArr=[null,D.listings,D.avgRent,D.rentPSF,D.avgSize,D.deposit];
+  document.getElementById('hmtbl').innerHTML=`<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rowData.map((row,ri)=>`<tr>${row.map((cell,ci)=>{if(ci===0)return`<td class="hm-loc">${cell}</td>`;const arr=heatArr[ci],mn=Math.min(...arr),mx=Math.max(...arr),pct=(arr[ri]-mn)/(mx-mn),alpha=(0.1+pct*0.6).toFixed(2);return`<td style="background:rgba(26,107,90,${alpha});color:${pct>0.5?'#fff':'#0e0e0e'}">${cell}</td>`}).join('')}</tr>`).join('')}</tbody>`;
+  const rs=D.locs.map((l,i)=>({l,v:D.avgRent[i]})).sort((a,b)=>b.v-a.v);
+  mkBars('b-rent',rs.map(x=>x.l),rs.map(x=>x.v),R,v=>'₹'+v.toLocaleString());
+  new Chart(document.getElementById('c2-bhkrent'),{type:'bar',data:{labels:['RK1','BHK1','BHK2','BHK3','BHK4'],datasets:[{data:[5419,8456,16404,23150,35960],backgroundColor:['#888','#6b7280',T,B,A],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'k'},grid:{color:'#f0ede6'}},x:{grid:{display:false}}}}});
+  const locC={Bellandur:R,Whitefield:T,Electronic_City:B,Brookefield:A,Kaggadasapura:'#7c3aed',Yelahanka:'#d97706',Varthur:'#0891b2',K_R_Puram:'#888'};
+  const scPts=[{l:'Bellandur',s:1400,r:25000},{l:'Bellandur',s:2160,r:45000},{l:'Bellandur',s:1786,r:32000},{l:'Bellandur',s:2300,r:42000},{l:'Bellandur',s:925,r:20000},{l:'Whitefield',s:1200,r:20000},{l:'Whitefield',s:2025,r:35000},{l:'Whitefield',s:1000,r:18000},{l:'Whitefield',s:1910,r:40000},{l:'Whitefield',s:2072,r:60000},{l:'Whitefield',s:1350,r:45000},{l:'Whitefield',s:750,r:9500},{l:'Electronic_City',s:700,r:7000},{l:'Electronic_City',s:1000,r:10000},{l:'Electronic_City',s:1500,r:17500},{l:'Electronic_City',s:1200,r:12000},{l:'Electronic_City',s:800,r:10000},{l:'Brookefield',s:1500,r:24000},{l:'Brookefield',s:1700,r:36000},{l:'Brookefield',s:2100,r:70000},{l:'Kaggadasapura',s:1100,r:17000},{l:'Kaggadasapura',s:1395,r:23000},{l:'Yelahanka',s:1224,r:14500},{l:'Yelahanka',s:1400,r:27000},{l:'Varthur',s:1110,r:16000},{l:'Varthur',s:1195,r:23000},{l:'K_R_Puram',s:900,r:13000},{l:'K_R_Puram',s:1056,r:25000}];
+  const lkeys=['Bellandur','Whitefield','Electronic_City','Brookefield','Kaggadasapura','Yelahanka','Varthur','K_R_Puram'];
+  const lshort={Bellandur:'Bellandur',Whitefield:'Whitefield',Electronic_City:'Elec. City',Brookefield:'Brookefield',Kaggadasapura:'Kaggadasapura',Yelahanka:'Yelahanka',Varthur:'Varthur',K_R_Puram:'K.R. Puram'};
+  document.getElementById('sc-leg').innerHTML=lkeys.map(k=>`<span class="leg"><span class="legsq" style="background:${locC[k]}"></span>${lshort[k]}</span>`).join('');
+  new Chart(document.getElementById('c2-scatter'),{type:'scatter',data:{datasets:lkeys.map(k=>({label:k,data:scPts.filter(p=>p.l===k).map(p=>({x:p.s,y:p.r})),backgroundColor:locC[k]+'bb',pointRadius:6}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'Size (sqft)'},min:0,max:3200,grid:{color:'#f0ede6'}},y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'k'},min:0,max:75000,grid:{color:'#f0ede6'}}}}});
+  new Chart(document.getElementById('c2-furn'),{type:'bar',data:{labels:['Fully','Semi','Unfurnished'],datasets:[{data:[18058,18097,10279],backgroundColor:[T,B,'#888'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'k'},grid:{color:'#f0ede6'}},x:{grid:{display:false}}}}});
+  new Chart(document.getElementById('c2-btype-r'),{type:'bar',data:{labels:['Indep. House','Apartment','Indep. Floor'],datasets:[{data:[23753,20027,10296],backgroundColor:[A,T,'#888'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'k'},grid:{color:'#f0ede6'}},x:{grid:{display:false}}}}});
+  new Chart(document.getElementById('c2-split'),{type:'doughnut',data:{labels:['Premium >₹15k','Budget ≤₹15k'],datasets:[{data:[1263,1307],backgroundColor:[T,'#d4ede8'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}}},cutout:'58%'}});
+  mkDarkBars(D.locs.map((l,i)=>({l,v:D.rentPSF[i]})));
+  mkBars('b-size',D.locs,D.avgSize,G,v=>v.toLocaleString()+' sqft');
+  new Chart(document.getElementById('c3-deposit'),{type:'bar',data:{labels:D.locs,datasets:[{data:D.deposit,backgroundColor:C8,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'k'},grid:{color:'#f0ede6'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  const dtr=D.locs.map((l,i)=>({l,v:+(D.deposit[i]/D.avgRent[i]).toFixed(1)}));
+  mkBars('b-dtr',dtr.map(x=>x.l),dtr.map(x=>x.v),R,v=>v.toFixed(1)+'x',10);
+  new Chart(document.getElementById('c4-pct'),{type:'bar',data:{labels:D.locs,datasets:[{label:'Gym',data:D.gym.map(v=>Math.round(v*100)),backgroundColor:T},{label:'Pool',data:D.pool.map(v=>Math.round(v*100)),backgroundColor:B},{label:'Lift',data:D.lift.map(v=>Math.round(v*100)),backgroundColor:A}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{font:{size:10}},grid:{display:false}},y:{max:100,ticks:{callback:v=>v+'%'},grid:{color:'#f0ede6'}}},plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:10}}}}});
+  new Chart(document.getElementById('c4-impact'),{type:'bar',data:{labels:['Gym ✓','Gym ✗','Pool ✓','Pool ✗','Lift ✓','Lift ✗'],datasets:[{data:[22684,13888,23539,14033,20794,12465],backgroundColor:[T,'#9fd6c8',B,'#b5d4f4',A,'#fad09a'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'k'},grid:{color:'#f0ede6'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  new Chart(document.getElementById('c4-furn'),{type:'bar',data:{labels:D.locs,datasets:[{label:'Fully',data:D.furnFF,backgroundColor:T},{label:'Semi',data:D.furnSF,backgroundColor:B},{label:'None',data:D.furnNF,backgroundColor:'#888'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,grid:{color:'#f0ede6'}}},plugins:{legend:{display:false}}}});
+  new Chart(document.getElementById('c4-lease'),{type:'bar',data:{labels:D.locs,datasets:[{label:'Anyone',data:D.leaseAny,backgroundColor:T},{label:'Family',data:D.leaseFamily,backgroundColor:B},{label:'Bachelor',data:D.leaseBach,backgroundColor:A}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,grid:{color:'#f0ede6'}}},plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:10}}}}});
+}
+function switchProblem(key){document.querySelectorAll('.ppage').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('on'));document.getElementById('pp-'+key).classList.add('on');document.getElementById('ptab-'+key).classList.add('on')}
+function showTenantType(type,btn){['bachelor','family','luxury'].forEach(t=>{const el=document.getElementById('tt-'+t);if(el)el.style.display=t===type?'block':'none'});btn.closest('div').querySelectorAll('.bhk-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+let selBHK='BHK1';
+function selectBHK(bhk,btn){selBHK=bhk;document.querySelectorAll('#bhk-selector .bhk-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');updateBudget()}
+const bhkRents={RK1:{Whitefield:4500,ElecCity:3800,Yelahanka:3000,Bellandur:5000,Kaggadasapura:4000,Brookefield:4500,Varthur:4200,KRPuram:3500},BHK1:{Whitefield:9500,ElecCity:8456,Yelahanka:6200,Bellandur:10200,Kaggadasapura:8800,Brookefield:9200,Varthur:8000,KRPuram:6800},BHK2:{Whitefield:18500,ElecCity:12000,Yelahanka:12800,Bellandur:24000,Kaggadasapura:15500,Brookefield:19500,Varthur:13800,KRPuram:10500},BHK3:{Whitefield:24000,ElecCity:16000,Yelahanka:16500,Bellandur:32000,Kaggadasapura:22000,Brookefield:25000,Varthur:18000,KRPuram:16000}};
+const locFull={Whitefield:'Whitefield',ElecCity:'Electronic City',Yelahanka:'Yelahanka',Bellandur:'Bellandur',Kaggadasapura:'Kaggadasapura',Brookefield:'Brookefield',Varthur:'Varthur',KRPuram:'K.R. Puram'};
+function updateBudget(){const budget=parseInt(document.getElementById('budget-slider').value);document.getElementById('budget-display').textContent='₹'+budget.toLocaleString();const rents=bhkRents[selBHK]||bhkRents.BHK2;document.getElementById('budget-results').innerHTML=Object.entries(rents).map(([loc,rent])=>{const match=rent<=budget,diff=budget-rent;return`<div class="bres-card ${match?'match':'no'}"><div class="bres-loc">${locFull[loc]}</div><div class="bres-rent">₹${rent.toLocaleString()}</div><div class="bres-tag">${selBHK} avg rent</div>${match?`<div class="bres-avail">✓ Within budget (₹${diff.toLocaleString()} headroom)</div>`:`<div class="bres-no">✗ ₹${(rent-budget).toLocaleString()} over budget</div>`}</div>`}).join('')}
+function runCompare(){const ai=parseInt(document.getElementById('cmp-a').value),bi=parseInt(document.getElementById('cmp-b').value);const metrics=[{label:'Avg Monthly Rent',vals:D.avgRent,fmt:v=>'₹'+v.toLocaleString(),higher:true},{label:'Listings (supply)',vals:D.listings,fmt:v=>v.toLocaleString(),higher:true},{label:'Rent per sqft',vals:D.rentPSF,fmt:v=>'₹'+v.toFixed(2),higher:true},{label:'Avg Property Size',vals:D.avgSize,fmt:v=>v.toLocaleString()+' sqft',higher:true},{label:'Avg Deposit',vals:D.deposit,fmt:v=>'₹'+Math.round(v/1000)+'k',higher:false},{label:'Gym %',vals:D.gym.map(v=>Math.round(v*100)),fmt:v=>v+'%',higher:true},{label:'Pool %',vals:D.pool.map(v=>Math.round(v*100)),fmt:v=>v+'%',higher:true},{label:'Lift %',vals:D.lift.map(v=>Math.round(v*100)),fmt:v=>v+'%',higher:true}];const res=document.getElementById('cmp-result');res.innerHTML=`<div class="cmp-col"><div class="cmp-col-name">${D.locs[ai]}</div>${metrics.map(m=>{const win=m.higher?m.vals[ai]>=m.vals[bi]:m.vals[ai]<=m.vals[bi];return`<div class="cmp-stat"><span>${m.label}</span><span><strong>${m.fmt(m.vals[ai])}</strong>${win?'<span class="cmp-winner">wins</span>':''}</span></div>`}).join('')}</div><div class="cmp-col"><div class="cmp-col-name">${D.locs[bi]}</div>${metrics.map(m=>{const win=m.higher?m.vals[bi]>m.vals[ai]:m.vals[bi]<m.vals[ai];return`<div class="cmp-stat"><span>${m.label}</span><span><strong>${m.fmt(m.vals[bi])}</strong>${win?'<span class="cmp-winner">wins</span>':''}</span></div>`}).join('')}</div>`;res.classList.add('show')}
+function toggleInsights(){const body=document.getElementById('ins-body'),chev=document.getElementById('ins-chev');body.classList.toggle('open');chev.classList.toggle('open');if(body.classList.contains('open')&&!window._insR){window._insR=true;renderInsights('all')}}
+function filterIns(cat,btn){document.querySelectorAll('.itab').forEach(t=>t.classList.remove('on'));if(btn)btn.classList.add('on');renderInsights(cat)}
+const INS=[{n:'01',cat:'pricing',tag:'Pricing',title:'Bellandur commands 135% premium over K.R. Puram',body:'₹25,949 vs ₹11,032 avg monthly rent. Same city — locality selection alone determines rental returns.',action:'Locality selection matters more than property type for returns.'},{n:'02',cat:'pricing',tag:'Pricing',title:'3BHK earns 174% more rent than 1BHK',body:'₹8,456 avg 1BHK vs ₹23,150 for 3BHK. Construction cost doesn\'t scale at the same rate, so larger units often deliver disproportionate yields.',action:'Build 3BHK in premium localities for maximum rental income.'},{n:'03',cat:'pricing',tag:'Pricing',title:'Semi-furnished earns the same as fully furnished',body:'Both average ~₹18,000/month. Landlords who fully furnish see zero return uplift but incur maintenance costs.',action:'Semi-furnish only — optimal strategy, lowest cost for same rent.'},{n:'04',cat:'pricing',tag:'Pricing',title:'Unfurnished properties earn ₹8,000/month less',body:'₹10,279 vs ₹18,000+ for furnished. Even minimal semi-furnishing dramatically lifts rental value.',action:'At minimum, semi-furnish before listing — pays back in under 2 months.'},{n:'05',cat:'pricing',tag:'Pricing',title:'Independent Houses earn 19% more than apartments',body:'IH avg ₹23,753 vs Apartment ₹20,027. Tenants pay a real premium for privacy and direct ownership feel.',action:'In premium localities, IH can deliver superior per-unit returns.'},{n:'06',cat:'pricing',tag:'Pricing',title:'Kaggadasapura PSF rivals Whitefield at lower entry cost',body:'₹16.10/sqft vs Whitefield ₹16.17 — near-identical yield despite being a much smaller, cheaper market.',action:'Kaggadasapura: the most underappreciated high-PSF market in the city.'},{n:'07',cat:'pricing',tag:'Pricing',title:'Varthur delivers Whitefield access at 28% discount',body:'₹14,475 avg vs Whitefield ₹20,268 — same tech park ecosystem at lower rents and only 130 listings.',action:'For value-seeking IT workers: Varthur is the smart relocation choice.'},{n:'08',cat:'pricing',tag:'Pricing',title:'Median rent ₹15,000 splits market into two clear tiers',body:'1,263 listings above ₹15k (premium), 1,307 below (budget). Each tier has a completely different tenant profile and amenity expectation.',action:'Understand which tier you\'re entering before pricing a property.'},{n:'09',cat:'pricing',tag:'Pricing',title:'Whitefield rent range spans ₹5,250 to ₹75,000+',body:'The widest rent band in the city — covers everything from budget 1BHK to luxury penthouses.',action:'Whitefield serves both budget and luxury segments simultaneously.'},{n:'10',cat:'pricing',tag:'Pricing',title:'RK1 units are rare — only 82 listings citywide',body:'Just 3.2% of market. Electronic City has the most (29), followed by Whitefield (25).',action:'For tenants needing RK1: start search in Electronic City.'},{n:'11',cat:'invest',tag:'Investment',title:'Bellandur: highest rent per sqft at ₹18.02',body:'Best rental yield per unit of built area. Compact 2BHK (900-1,200 sqft) here maximises returns.',action:'In Bellandur, smaller efficient units outperform large ones on yield.'},{n:'12',cat:'invest',tag:'Investment',title:'Brookefield: premium PSF with zero saturation',body:'₹16.83/sqft — second highest — but only 138 listings vs Whitefield 745. Faster absorption, less price negotiation.',action:'Brookefield delivers Whitefield-grade yields with far lower competition.'},{n:'13',cat:'invest',tag:'Investment',title:'Bellandur deposit: 7.5× monthly rent',body:'₹1,94,087 average deposit — highest in the city. Landlords here have strong negotiating power.',action:'Premium markets support premium deposit requirements.'},{n:'14',cat:'invest',tag:'Investment',title:'K.R. Puram: buy before infrastructure catches up',body:'Lowest rents + lowest PSF + smallest inventory = early-stage market. Metro Phase 2 could drive 30–50% rent appreciation in 5 years.',action:'For 5-year investors: K.R. Puram land is the lowest-cost entry in the city.'},{n:'15',cat:'invest',tag:'Investment',title:'Whitefield: most liquid, de-risked investment market',body:'745 listings, ₹20,268 avg, ₹16.17 PSF. The sheer volume provides liquidity — easiest market to buy, sell, and rent consistently.',action:'For risk-averse investors: Whitefield is the most reliable market.'},{n:'16',cat:'invest',tag:'Investment',title:'Deposit multiples cluster between 6.7×–7.5× city-wide',body:'Predictable range across all localities. Budget 7–8 months rent as deposit regardless of locality.',action:'Standard financial model: budget 8× monthly rent as deposit exposure.'},{n:'17',cat:'invest',tag:'Investment',title:'Yelahanka: north Bengaluru\'s underbuilt opportunity',body:'341 listings with ₹14,641 avg rent — 3rd largest market but still growing with rising tech worker population.',action:'For north-Bengaluru developers: Yelahanka is underbuilt relative to demand.'},{n:'18',cat:'invest',tag:'Investment',title:'Apartment Complexes dominate at 67% of market',body:'1,720 of 2,570 listings are APs — clear preference for both landlords and tenants. APs benefit from shared amenity costs.',action:'AP format offers the easiest path to full occupancy and highest rents.'},{n:'19',cat:'supply',tag:'Supply',title:'Whitefield + Electronic City = 52% of total supply',body:'These two localities alone represent over half of all listings. Any city-wide trend will hit them hardest.',action:'Investors: diversify across 3+ localities to reduce concentration risk.'},{n:'20',cat:'supply',tag:'Supply',title:'Brookefield is critically undersupplied for its price point',body:'Only 138 listings at ₹20,619 avg rent. Supply-demand gap = pricing power for landlords.',action:'First-mover developers in Brookefield face near-zero competition.'},{n:'21',cat:'supply',tag:'Supply',title:'BHK2 dominates at 49% — the market consensus',body:'Nearly half of all listings. If you build only one BHK type for your career, build 2BHK.',action:'Build 2BHK for fastest rental absorption in every locality.'},{n:'22',cat:'supply',tag:'Supply',title:'K.R. Puram: smallest, most affordable market',body:'118 listings, ₹11,032 avg, lowest in the city. First-mover builders can acquire land before the appreciation cycle.',action:'Develop in K.R. Puram now to capture early market share.'},{n:'23',cat:'supply',tag:'Supply',title:'67% of listings use open lease terms',body:'Most landlords prefer flexible "ANYONE" listings. Open listings likely fill faster with lower vacancy gaps.',action:'For landlords: removing lease restrictions reduces vacancy periods.'},{n:'24',cat:'supply',tag:'Supply',title:'Bellandur average property size: 1,616 sqft',body:'The market expectation here is spacious. New builds under 1,200 sqft will face resistance.',action:'In Bellandur, build units above 1,200 sqft to match market expectation.'},{n:'25',cat:'supply',tag:'Supply',title:'Independent floors earn far less than apartments',body:'IF average ₹10,296 vs AP ₹20,027. They serve a budget niche but are structurally disadvantaged.',action:'For new construction: prioritise AP format over IF for rental value.'},{n:'26',cat:'amenity',tag:'Amenities',title:'Swimming pool adds ₹9,500/month — highest ROI amenity',body:'₹23,539 with pool vs ₹14,034 without. A 50-unit complex pool investment pays back in 18–24 months.',action:'Pool ROI payback estimated at 18–24 months at 50-unit scale.'},{n:'27',cat:'amenity',tag:'Amenities',title:'Gym adds ₹8,796/month premium to rent',body:'₹22,684 with gym vs ₹13,888 without — 63% uplift. Gym access is transitioning from luxury to expectation.',action:'Gym is near-mandatory for any project targeting >₹15k/month rents.'},{n:'28',cat:'amenity',tag:'Amenities',title:'Lift access adds ₹8,329/month — mandatory above 2 floors',body:'₹20,794 with lift vs ₹12,465 without. Any building above 2 floors without a lift is leaving money on the table.',action:'Never build above 2 floors without lift access — non-negotiable.'},{n:'29',cat:'amenity',tag:'Amenities',title:'K.R. Puram: amenity desert = zero-competition opportunity',body:'6.8% gym, 5.9% pool, 15.3% lift — lowest in the city. A fully amenitised complex here faces no competition.',action:'Amenity-rich builds in K.R. Puram can charge Kaggadasapura-level rents immediately.'},{n:'30',cat:'amenity',tag:'Amenities',title:'Bellandur sets the benchmark: 51% gym, 48% pool, 84% lift',body:'New projects in Bellandur without all three amenities will under-perform. Tenants here expect these as standard.',action:'For Bellandur projects: gym + pool + lift is the minimum viable amenity stack.'},{n:'31',cat:'amenity',tag:'Amenities',title:'79% semi-furnished is the citywide standard',body:'Not just popular — it is the market expectation. Tenants heavily penalise unfurnished units.',action:'All landlords: semi-furnish as baseline — non-negotiable for competitive rent.'},{n:'32',cat:'amenity',tag:'Amenities',title:'Whitefield leads gym availability at 53%',body:'Over half of Whitefield properties offer gym access. This is the standard tenants now expect here.',action:'For Whitefield investors: gym provision is required for premium positioning.'},{n:'33',cat:'amenity',tag:'Amenities',title:'Kaggadasapura has only 6.5% pool coverage — a gap',body:'Despite ₹15,844 avg rent, almost no properties have pools. The first pool-equipped developer here faces zero competition.',action:'Pool-equipped project in Kaggadasapura: first and only in the market.'},{n:'34',cat:'tenant',tag:'Tenants',title:'Electronic City is Bengaluru\'s best bachelor market',body:'Cheapest rents, closest to major IT employers, highest RK1 supply (29), and 19 dedicated bachelor listings.',action:'Electronic City: best value + shortest commute for IT workers.'},{n:'35',cat:'tenant',tag:'Tenants',title:'Yelahanka: best family value in north Bengaluru',body:'203 family-listed units, 1,125 sqft avg homes, greener environment, ₹14,641 avg rent.',action:'Yelahanka: best price-to-space ratio for families in the city.'},{n:'36',cat:'tenant',tag:'Tenants',title:'Bellandur: definitive premium family address',body:'1,616 sqft avg, 51% BHK3+, 48% pool coverage, top schools nearby. Unambiguously first-choice for families with ₹30k+ budget.',action:'For premium family tenants: Bellandur delivers everything.'},{n:'37',cat:'tenant',tag:'Tenants',title:'Brookefield: boutique exclusivity at premium prices',body:'Only 138 listings creates scarcity. Quieter than Whitefield while commanding near-identical rents.',action:'For tenants wanting exclusivity: Brookefield over Whitefield.'},{n:'38',cat:'tenant',tag:'Tenants',title:'3BHK group sharing is the most cost-efficient rental mode',body:'At ₹23,150 avg, splitting 3-ways costs ₹7,717/person — often cheaper than a solo 1BHK (₹8,456).',action:'Young professionals: 3BHK group share saves ₹700–2,000/person vs solo 1BHK.'},{n:'39',cat:'tenant',tag:'Tenants',title:'K.R. Puram: hidden gem for budget families',body:'883 sqft avg at ₹11,032/month. Functional 2BHK under ₹12k. Early movers get low rents before appreciation.',action:'Budget families: lock in K.R. Puram rents before appreciation begins.'},{n:'40',cat:'tenant',tag:'Tenants',title:'Whitefield: largest fully-furnished stock — 96 units',body:'Biggest plug-and-play inventory. Tenants relocating from other cities should prioritise Whitefield\'s furnished stock.',action:'Relocating from out-of-city: Whitefield furnished stock is the easiest option.'},{n:'41',cat:'pricing',tag:'Pricing',title:'Yelahanka rent range: ₹2,500 to ₹35,000',body:'The widest budget band outside of Whitefield — serves multiple segments simultaneously.',action:'Yelahanka accommodates budget, mid-range, and upper-mid tenants all at once.'},{n:'42',cat:'invest',tag:'Investment',title:'Premium/budget market split is near-perfectly balanced',body:'1,263 premium vs 1,307 budget listings. Neither tier is oversupplied. Both carry similar vacancy risk.',action:'New investors can enter either tier without unusual saturation risk.'},{n:'43',cat:'supply',tag:'Supply',title:'Bellandur family-listing concentration highest in city',body:'148 family-listed units + 51% BHK3+. The market has self-selected toward family housing. Bachelor tenants will find fewer options here.',action:'Bellandur: build for families, not bachelors — the market has spoken.'},{n:'44',cat:'amenity',tag:'Amenities',title:'Lift correlates most directly with rent of any amenity',body:'Bellandur: 84% lift, ₹25,949 rent. K.R. Puram: 15.3% lift, ₹11,032 rent. Strongest single-amenity rent predictor.',action:'For any vertical development: lift is the most rent-predictive amenity.'},{n:'45',cat:'amenity',tag:'Amenities',title:'Furnishing preference varies dramatically by locality',body:'Brookefield: 25% fully furnished. K.R. Puram: near-zero. Matches each area\'s tenant demographic profile.',action:'Match furnishing strategy to your locality\'s specific tenant demographics.'},{n:'46',cat:'supply',tag:'Supply',title:'Whitefield has the best luxury 4BHK+ inventory: 33 units',body:'By far the most 4BHK+ listings of any locality. Luxury developers have concentrated here for proven demand.',action:'For luxury-tier development: Whitefield is the proven address.'},{n:'47',cat:'invest',tag:'Investment',title:'Varthur: lowest deposit multiple signals fastest market',body:'6.8× deposit multiple — lowest in the city. Lower landlord power but also faster fill rates and lower vacancy risk.',action:'Varthur: lower negotiation power but also the lowest vacancy risk.'},{n:'48',cat:'pricing',tag:'Pricing',title:'Electronic City: volume-budget champion',body:'630 listings at ₹12,576 avg. Ideal for IT professionals on ₹40–70k salaries. Compete on volume, not luxury.',action:'Electronic City: scale-up strategy, not premium-positioning strategy.'},{n:'49',cat:'supply',tag:'Supply',title:'Only 65 bachelor-listed units across the entire city',body:'Just 2.5% of listings explicitly target bachelors. Most landlords use "ANYONE" instead.',action:'As a bachelor tenant: filter by "Anyone" + 1BHK to see the full available market.'},{n:'50',cat:'invest',tag:'Investment',title:'Kaggadasapura: mid-market with premium PSF — undiscovered',body:'₹16.10/sqft near Whitefield levels with only 155 listings and a growing IT population. Underrated by investors.',action:'Kaggadasapura: the most underappreciated high-PSF market in Bengaluru right now.'}];
+const tagSty={Pricing:{bg:'#f5dada',c:'#b84242'},Investment:{bg:'#fdecd7',c:'#d46c1a'},Supply:{bg:'#f3e8ff',c:'#6b21a8'},Amenities:{bg:'#d4ede8',c:'#1a6b5a'},Tenants:{bg:'#dde5f7',c:'#2b4fa0'}};
+function renderInsights(cat){const filtered=cat==='all'?INS:INS.filter(x=>x.cat===cat);document.getElementById('ins-grid').innerHTML=filtered.map(ins=>{const s=tagSty[ins.tag]||tagSty.Pricing;return`<div class="icard"><span class="itag" style="background:${s.bg};color:${s.c}">${ins.tag.toUpperCase()}</span><div class="inum">INSIGHT ${ins.n}</div><div class="ititle">${ins.title}</div><div class="ibody">${ins.body}</div><div class="iaction">▸ ${ins.action}</div></div>`}).join('')}
+const navAs=document.querySelectorAll('.nav-links a');
+const sObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navAs.forEach(a=>a.classList.remove('act'));const m=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);if(m)m.classList.add('act')}})},{threshold:0.25});
+document.querySelectorAll('section[id]').forEach(s=>sObs.observe(s));
+document.addEventListener('DOMContentLoaded',()=>{initCharts();updateBudget()});
+</script>
+</body>
+</html>
